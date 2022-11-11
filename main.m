@@ -23,6 +23,11 @@ f = fs *(0:( L /2) )/L ; % Define the frequency
 figure(1)
 subplot(2,1,1)
 plot(t,sig);
+xlim([t(1) t(end)]);
+xlabel('Time [s]');
+ylabel('Amplitude [a.u.]');
 
 subplot(2,1,2)
-plot(f,P1);
+plot(f,P1/max(P1));
+xlabel('Frequency [Hz]');
+ylabel('|A(f)|_{norm} [a. u.]');
