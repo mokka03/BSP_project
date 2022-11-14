@@ -2,9 +2,9 @@
 clear all;
 
 %% Load data
-fileName = '85033';
-sig = audioread(["data/normal/" fileName "_TV.wav"])';
-tlabels = readtable(["data/normal/" fileName "_TV.tsv"],"FileType","text","Delimiter","tab");
+fileName = '85029';
+sig = audioread(strcat("data/normal/", fileName, "_TV.wav"))';
+tlabels = readtable(strcat("data/normal/", fileName, "_TV.tsv"),"FileType","text","Delimiter","tab");
 fs = 4000; % Hz
 t_length = length(sig)/fs; % s
 t = linspace(0, t_length, t_length*fs); % s
