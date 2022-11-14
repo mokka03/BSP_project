@@ -3,45 +3,49 @@ clear all;
 
 %% Load data
 sig = audioread("data/normal/85033_TV.wav")';
-labels = readtable("data/normal/85033_TV.tsv","FileType","text","Delimiter","tab");
+% labels = readtable("data/normal/85033_TV.tsv","FileType","text","Delimiter","tab");
 fs = 4000; % Hz
 t_length = length(sig)/fs; % s
 t = linspace(0, t_length, t_length*fs); % s
 
+%% Filtering
+% Filtering out the frequencies above 60 Hz
+[b_low,a_low] = butter(6,60/(fs/2),'low');
+fsig = filter(b_low,a_low,sig);
+% % Filtering out the frequencies under ... Hz
+% [b_high,a_high] = butter(3,0.1/(fs/2),'high');
+% fsig = filter(b_high,a_high,fsig);
+% freqz(b1,a1);
+
 %% FFT
-A = (sig); % This variable will be transformed
-L = length (A); % Length of A
-Y = fft (A) ; % Compute the FFT
-
-P2 = abs (Y/L ); % Compute the two - sided spectrum
-P1 = P2 (1: L /2+1) ; % Compute the single - sided spectrum
-P1 (2: end -1) = 2* P1 (2: end -1) ; % Compute the single - sided spectrum
-
-f = fs *(0:( L /2) )/L ; % Define the frequency
+[f, sig_FFT] = myFFT(sig,fs);
+[f_filtered, fsig_FFT] = myFFT(fsig,fs);
 
 %% STFT
 % Short-time Fourier transform
-[s,f2,t2] = stft(sig,fs,'Window',hann(1024));
+[s,f2_stft,t2] = stft(fsig,fs,'Window',hann(1024));
 sdb = mag2db(abs(s)); % Amplitude spectrum to dB
 
 %% Plot
 figure(1)
-% Plot signal
+% Plot filtered signal
 subplot(2,1,1)
-plot(t,sig);
+plot(t,fsig);
 xlim([t(1) t(end)]);
 xlabel('Time [s]');
 ylabel('Amplitude [a.u.]');
 
-% Plot FFT
+% Plot filtered FFT
 subplot(2,1,2)
-plot(f,P1/max(P1));
+plot(f_filtered,fsig_FFT);
+xlim([0 100]);
 xlabel('Frequency [Hz]');
 ylabel('|A(f)|_{norm} [a. u.]');
 
 % Plot the Short-time Fourier spectrum of the filtered signal
 figure(2)
-mesh(t2/60,f2,sdb);
+p = pcolor(t2/60,f2_stft,sdb);
+set(p, 'EdgeColor', 'none');    % Turn off gtid
 cc = max(sdb(:))+[-60 0];
 ax = gca;
 ax.CLim = cc;
@@ -49,6 +53,6 @@ view(2)
 c = colorbar;
 c.Label.String = 'Amplitude [dB]';
 % xlim([0 60]);
-% ylim([-1 1]);
+ylim([-100 100]);
 xlabel('Time [min]');
 ylabel('Frequency [Hz]');
