@@ -3,7 +3,7 @@ clear all;
 
 %% Load data
 sig = audioread("data/normal/85033_TV.wav")';
-% labels = readtable("data/normal/85033_TV.tsv","FileType","text","Delimiter","tab");
+labels = readtable("data/normal/85033_TV.tsv","FileType","text","Delimiter","tab");
 fs = 4000; % Hz
 t_length = length(sig)/fs; % s
 t = linspace(0, t_length, t_length*fs); % s
@@ -26,14 +26,23 @@ fsig = filter(b_low,a_low,sig);
 [s,f2_stft,t2] = stft(fsig,fs,'Window',hann(1024));
 sdb = mag2db(abs(s)); % Amplitude spectrum to dB
 
+%% Hilbert
+fsig_hat = hilbert(fsig);
+e = sqrt(fsig.^2 + fsig_hat.^2);
+
+
 %% Plot
 figure(1)
 % Plot filtered signal
 subplot(2,1,1)
 plot(t,fsig);
+hold on;
+plot(t,e);
+hold off;
 xlim([t(1) t(end)]);
 xlabel('Time [s]');
 ylabel('Amplitude [a.u.]');
+legend('Signal','Envelope');
 
 % Plot filtered FFT
 subplot(2,1,2)
@@ -42,6 +51,7 @@ xlim([0 100]);
 xlabel('Frequency [Hz]');
 ylabel('|A(f)|_{norm} [a. u.]');
 
+%%
 % Plot the Short-time Fourier spectrum of the filtered signal
 figure(2)
 p = pcolor(t2/60,f2_stft,sdb);
