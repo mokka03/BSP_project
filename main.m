@@ -3,11 +3,13 @@ clear all;
 
 %% Load data
 sig = audioread("data/normal/85033_TV.wav")';
-labels = readtable("data/normal/85033_TV.tsv","FileType","text","Delimiter","tab");
+tlabels = readtable("data/normal/85033_TV.tsv","FileType","text","Delimiter","tab");
 fs = 4000; % Hz
 t_length = length(sig)/fs; % s
 t = linspace(0, t_length, t_length*fs); % s
 
+%% Get labels
+labelArray = getLabels(tlabels,fs,t_length);
 %% Filtering
 % Filtering out the frequencies above 60 Hz
 [b_low,a_low] = butter(6,60/(fs/2),'low');
@@ -38,6 +40,7 @@ subplot(2,1,1)
 plot(t,fsig);
 hold on;
 plot(t,abs(e));
+plot(t,labelArray/4*max(abs(e)));
 hold off;
 xlim([t(1) t(end)]);
 xlabel('Time [s]');
