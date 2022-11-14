@@ -2,7 +2,7 @@
 clear all;
 
 %% Load data
-fileName = '85029';
+fileName = '69174';
 sig = audioread(strcat("data/normal/", fileName, "_TV.wav"))';
 tlabels = readtable(strcat("data/normal/", fileName, "_TV.tsv"),"FileType","text","Delimiter","tab");
 fs = 4000; % Hz
@@ -31,7 +31,12 @@ sdb = mag2db(abs(s)); % Amplitude spectrum to dB
 
 %% Hilbert
 fsig_hat = hilbert(fsig);
-e = sqrt(fsig.^2 + fsig_hat.^2);
+analitic = sqrt(fsig.^2 + fsig_hat.^2);
+envelope = abs(analitic);
+envelope = movmean(envelope,30);
+%% Find peaks on envelope
+[pks, locs] = findpeaks(envelope,'MinPeakHeight',mean(envelope));
+% [pks, locs] = findpeaks(abs(e),'MinPeakDistance',5,'MinPeakHeight',mean(envelope));
 
 
 %% Plot
@@ -40,10 +45,12 @@ figure(1)
 subplot(2,1,1)
 plot(t,fsig);
 hold on;
-plot(t,abs(e));
-plot(t,labelArray/4*max(abs(e)));
+plot(t,envelope);
+plot(t,labelArray/4*max(envelope));
+plot(locs/fs,pks,'.');
 hold off;
-xlim([t(1) t(end)]);
+xlim([4 8]);
+% xlim([t(1) t(end)]);
 xlabel('Time [s]');
 ylabel('Amplitude [a.u.]');
 legend('Signal','Envelope');
@@ -56,17 +63,17 @@ xlabel('Frequency [Hz]');
 ylabel('|A(f)|_{norm} [a. u.]');
 
 %%
-% Plot the Short-time Fourier spectrum of the filtered signal
-figure(2)
-p = pcolor(t2/60,f2_stft,sdb);
-set(p, 'EdgeColor', 'none');    % Turn off gtid
-cc = max(sdb(:))+[-60 0];
-ax = gca;
-ax.CLim = cc;
-view(2)
-c = colorbar;
-c.Label.String = 'Amplitude [dB]';
-% xlim([0 60]);
-ylim([-100 100]);
-xlabel('Time [min]');
-ylabel('Frequency [Hz]');
+% % Plot the Short-time Fourier spectrum of the filtered signal
+% figure(2)
+% p = pcolor(t2/60,f2_stft,sdb);
+% set(p, 'EdgeColor', 'none');    % Turn off gtid
+% cc = max(sdb(:))+[-60 0];
+% ax = gca;
+% ax.CLim = cc;
+% view(2)
+% c = colorbar;
+% c.Label.String = 'Amplitude [dB]';
+% % xlim([0 60]);
+% ylim([-100 100]);
+% xlabel('Time [min]');
+% ylabel('Frequency [Hz]');
