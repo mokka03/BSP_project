@@ -2,12 +2,15 @@
 clear all;
 
 %% Load data
-sig = audioread("data/normal/85033_TV.wav")';
-labels = readtable("data/normal/85033_TV.tsv","FileType","text","Delimiter","tab");
+fileName = '69144';
+sig = audioread(strcat("data/normal/", fileName, "_TV.wav"))';
+tlabels = readtable(strcat("data/normal/", fileName, "_TV.tsv"),"FileType","text","Delimiter","tab");
 fs = 4000; % Hz
 t_length = length(sig)/fs; % s
 t = linspace(0, t_length, t_length*fs); % s
 
+%% Get labels
+labelArray = getLabels(tlabels,fs,t_length);
 %% Filtering
 % Filtering out the frequencies above 60 Hz
 [b_low,a_low] = butter(6,60/(fs/2),'low');
@@ -27,18 +30,45 @@ fsig = filter(b_low,a_low,sig);
 sdb = mag2db(abs(s)); % Amplitude spectrum to dB
 
 %% Hilbert
-sgi_hat = hilbert(sig);
-e = sqrt(sig.^2 + sig_hat.^2);
+fsig_hat = hilbert(fsig);
+analitic = sqrt(fsig.^2 + fsig_hat.^2);
+envelope = abs(analitic);
+envelope = movmean(envelope,30);
+envelope = envelope/max(envelope);
+%% Find peaks on envelope
+[pks, locs] = findpeaks(envelope,'MinPeakDistance',0.1*fs,'MinPeakHeight',mean(envelope)*2);
 
+%% Get heart rate
+getHeartRate(envelope,locs);
+start_ = round(size(envelope,2)/5);
+end_ = start_*4;
+
+env = envelope(start_:end_);
+locs_short = locs(locs>start_);
+locs_short = locs_short(locs_short<end_);
+pks_short = env(locs_short);
+
+figure(4)
+plot(env);
+hold on;
+plot(locs_short,pks_short,'.');
+hold off;
 
 %% Plot
 figure(1)
 % Plot filtered signal
 subplot(2,1,1)
 plot(t,fsig);
-xlim([t(1) t(end)]);
+hold on;
+plot(t,envelope);
+plot(t,labelArray/4*max(envelope));
+plot(locs/fs,pks,'.');
+hold off;
+xlim([0 10]);
+% xlim([t(1) t(end)]);
 xlabel('Time [s]');
 ylabel('Amplitude [a.u.]');
+legend('Signal','Envelope (norm)');
 
 % Plot filtered FFT
 subplot(2,1,2)
@@ -47,17 +77,18 @@ xlim([0 100]);
 xlabel('Frequency [Hz]');
 ylabel('|A(f)|_{norm} [a. u.]');
 
-% Plot the Short-time Fourier spectrum of the filtered signal
-figure(2)
-p = pcolor(t2/60,f2_stft,sdb);
-set(p, 'EdgeColor', 'none');    % Turn off gtid
-cc = max(sdb(:))+[-60 0];
-ax = gca;
-ax.CLim = cc;
-view(2)
-c = colorbar;
-c.Label.String = 'Amplitude [dB]';
-% xlim([0 60]);
-ylim([-100 100]);
-xlabel('Time [min]');
-ylabel('Frequency [Hz]');
+%%
+% % Plot the Short-time Fourier spectrum of the filtered signal
+% figure(2)
+% p = pcolor(t2/60,f2_stft,sdb);
+% set(p, 'EdgeColor', 'none');    % Turn off gtid
+% cc = max(sdb(:))+[-60 0];
+% ax = gca;
+% ax.CLim = cc;
+% view(2)
+% c = colorbar;
+% c.Label.String = 'Amplitude [dB]';
+% % xlim([0 60]);
+% ylim([-100 100]);
+% xlabel('Time [min]');
+% ylabel('Frequency [Hz]');

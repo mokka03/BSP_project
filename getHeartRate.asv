@@ -1,0 +1,19 @@
+function [HeartRate] = getHeartRate(envelope,locs,fs)
+%GETHEARTRATE
+%   Get heart rate
+% Cut down the beginning and end, just to get r
+start_ = round(size(envelope,2)/5);
+end_ = start_*4;
+locs_short = locs(locs>start_);
+locs_short = locs_short(locs_short<end_);
+
+peak_num = size(locs_short,2);
+if  rem(peak_num, 2) == 0
+    HeartRate = (locs_short(end)-locs_short(1))/peak_num*2;
+else
+    HeartRate = (locs_short(end-1)-locs_short(1))/(peak_num-1)*2;
+end
+HeartRate = (1/HeartRate)*fs;
+
+end
+

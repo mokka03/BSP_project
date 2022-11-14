@@ -16,7 +16,7 @@ labelArray = getLabels(tlabels,fs,t_length);
 [b_low,a_low] = butter(6,60/(fs/2),'low');
 fsig = filter(b_low,a_low,sig);
 % % Filtering out the frequencies under ... Hz
-% [b_high,a_high] = butter(3,0.1/(fs/2),'high');
+% [b_high,a_high] = butter(3,10/(fs/2),'high');
 % fsig = filter(b_high,a_high,fsig);
 % freqz(b1,a1);
 
@@ -37,8 +37,9 @@ envelope = movmean(envelope,30);
 envelope = envelope/max(envelope);
 %% Find peaks on envelope
 [pks, locs] = findpeaks(envelope,'MinPeakDistance',0.1*fs,'MinPeakHeight',mean(envelope)*2);
-% [pks, locs] = findpeaks(abs(e),'MinPeakDistance',5,'MinPeakHeight',mean(envelope));
 
+%% Get heart rate
+HeartRate = getHeartRate(envelope,locs,fs);
 
 %% Plot
 figure(1)
@@ -50,7 +51,7 @@ plot(t,envelope);
 plot(t,labelArray/4*max(envelope));
 plot(locs/fs,pks,'.');
 hold off;
-xlim([0 10]);
+% xlim([0 10]);
 % xlim([t(1) t(end)]);
 xlabel('Time [s]');
 ylabel('Amplitude [a.u.]');
@@ -63,18 +64,18 @@ xlim([0 100]);
 xlabel('Frequency [Hz]');
 ylabel('|A(f)|_{norm} [a. u.]');
 
-%%
-% % Plot the Short-time Fourier spectrum of the filtered signal
-% figure(2)
-% p = pcolor(t2/60,f2_stft,sdb);
-% set(p, 'EdgeColor', 'none');    % Turn off gtid
-% cc = max(sdb(:))+[-60 0];
-% ax = gca;
-% ax.CLim = cc;
-% view(2)
-% c = colorbar;
-% c.Label.String = 'Amplitude [dB]';
-% % xlim([0 60]);
-% ylim([-100 100]);
-% xlabel('Time [min]');
-% ylabel('Frequency [Hz]');
+
+% Plot the Short-time Fourier spectrum of the filtered signal
+figure(2)
+p = pcolor(t2,f2_stft,sdb);
+set(p, 'EdgeColor', 'none');    % Turn off gtid
+cc = max(sdb(:))+[-60 0];
+ax = gca;
+ax.CLim = cc;
+view(2)
+c = colorbar;
+c.Label.String = 'Amplitude [dB]';
+% xlim([0 60]);
+ylim([-100 100]);
+xlabel('Time [min]');
+ylabel('Frequency [Hz]');
