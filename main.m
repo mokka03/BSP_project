@@ -2,7 +2,7 @@
 clear all;
 
 %% Load data
-fileName = '69174';
+fileName = '69144';
 sig = audioread(strcat("data/normal/", fileName, "_TV.wav"))';
 tlabels = readtable(strcat("data/normal/", fileName, "_TV.tsv"),"FileType","text","Delimiter","tab");
 fs = 4000; % Hz
@@ -34,8 +34,9 @@ fsig_hat = hilbert(fsig);
 analitic = sqrt(fsig.^2 + fsig_hat.^2);
 envelope = abs(analitic);
 envelope = movmean(envelope,30);
+envelope = envelope/max(envelope);
 %% Find peaks on envelope
-[pks, locs] = findpeaks(envelope,'MinPeakHeight',mean(envelope));
+[pks, locs] = findpeaks(envelope,'MinPeakDistance',0.1*fs,'MinPeakHeight',mean(envelope)*2);
 % [pks, locs] = findpeaks(abs(e),'MinPeakDistance',5,'MinPeakHeight',mean(envelope));
 
 
@@ -49,11 +50,11 @@ plot(t,envelope);
 plot(t,labelArray/4*max(envelope));
 plot(locs/fs,pks,'.');
 hold off;
-xlim([4 8]);
+xlim([0 10]);
 % xlim([t(1) t(end)]);
 xlabel('Time [s]');
 ylabel('Amplitude [a.u.]');
-legend('Signal','Envelope');
+legend('Signal','Envelope (norm)');
 
 % Plot filtered FFT
 subplot(2,1,2)
