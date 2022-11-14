@@ -37,7 +37,7 @@ figure(1)
 subplot(2,1,1)
 plot(t,fsig);
 hold on;
-plot(t,e);
+plot(t,abs(e));
 hold off;
 xlim([t(1) t(end)]);
 xlabel('Time [s]');
