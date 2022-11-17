@@ -2,9 +2,9 @@
 clear all;
 
 %% Load data
-fileName = '69144';
-sig = audioread(strcat("data/normal/", fileName, "_TV.wav"))';
-tlabels = readtable(strcat("data/normal/", fileName, "_TV.tsv"),"FileType","text","Delimiter","tab");
+fileName = '69141_MV';
+sig = audioread(strcat("data/normal/", fileName, ".wav"))';
+tlabels = readtable(strcat("data/normal/", fileName, ".tsv"),"FileType","text","Delimiter","tab");
 fs = 4000; % Hz
 t_length = length(sig)/fs; % s
 t = linspace(0, t_length, t_length*fs); % s
@@ -15,9 +15,9 @@ labelArray = getLabels(tlabels,fs,t_length);
 % Filtering out the frequencies above 60 Hz
 [b_low,a_low] = butter(6,60/(fs/2),'low');
 fsig = filter(b_low,a_low,sig);
-% % Filtering out the frequencies under ... Hz
-% [b_high,a_high] = butter(3,10/(fs/2),'high');
-% fsig = filter(b_high,a_high,fsig);
+% Filtering out the frequencies under ... Hz
+[b_high,a_high] = butter(3,10/(fs/2),'high');
+fsig = filter(b_high,a_high,fsig);
 % freqz(b1,a1);
 
 %% FFT
@@ -36,7 +36,7 @@ envelope = abs(analitic);
 envelope = movmean(envelope,30);
 envelope = envelope/max(envelope);
 %% Find peaks on envelope
-[pks, locs] = findpeaks(envelope,'MinPeakDistance',0.1*fs,'MinPeakHeight',mean(envelope)*2);
+[pks, locs] = findpeaks(envelope,'MinPeakDistance',0.2*fs,'MinPeakHeight',mean(envelope)*2);
 
 %% Get heart rate
 HeartRate = getHeartRate(envelope,locs,fs);

@@ -21,6 +21,7 @@ end
 
 % Calculate heart rate
 HeartRate = (1/tCycle)*fs;
+HeartRate = 1/HeartRate*60;
 
 end
 
