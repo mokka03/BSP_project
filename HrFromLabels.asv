@@ -7,7 +7,7 @@ wavfiles = dir([dirName '*.wav']); % Get the files from the folder
 fs = 4000; % Hz
 
 HR = HrFromCsv("data\HR_murmur.csv");
-HR{1,3} = 0;    % Just to create a nwe column in the table
+HR{1,3} = 0;    % Just to create a nwe 
 HR.Properties.VariableNames = ["Signal","HR","HR from labels"];
 
 
