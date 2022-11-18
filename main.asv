@@ -2,13 +2,12 @@
 clear all;
 
 %% Load data
+% fileName = '31737_TV';
 % fileName = '69141_MV';
-% fileName = '84721_TV';
 % sig = audioread(strcat("data/normal/", fileName, ".wav"))';
 % tlabels = readtable(strcat("data/normal/", fileName, ".tsv"),"FileType","text","Delimiter","tab");
 
-% fileName = '9979_TV';
-fileName = '46579_TV';
+fileName = '9979_TV';
 sig = audioread(strcat("data/murmur/", fileName, ".wav"))';
 tlabels = readtable(strcat("data/murmur/", fileName, ".tsv"),"FileType","text","Delimiter","tab");
 
@@ -48,7 +47,7 @@ envelope = abs(analitic);
 envelope = movmean(envelope,200); %30
 envelope = envelope/max(envelope);
 %% Find peaks on envelope
-[pks, locs] = findpeaks(envelope,'MinPeakDistance',0.17*fs,'MinPeakHeight',mean(envelope)*1); % 0.2s
+[pks, locs] = findpeaks(envelope,'MinPeakDistance',0.2*fs,'MinPeakHeight',mean(envelope)*1); % 0.2s
 
 %% Get heart rate
 HeartRate = getHeartRate(envelope,locs,fs)
