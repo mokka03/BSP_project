@@ -2,15 +2,15 @@
 clear all;
 
 %% Load data
-fileName = '69141_MV';
+% fileName = '69141_MV';
 % fileName = '84721_TV';
-sig = audioread(strcat("data/normal/", fileName, ".wav"))';
-tlabels = readtable(strcat("data/normal/", fileName, ".tsv"),"FileType","text","Delimiter","tab");
+% sig = audioread(strcat("data/normal/", fileName, ".wav"))';
+% tlabels = readtable(strcat("data/normal/", fileName, ".tsv"),"FileType","text","Delimiter","tab");
 
 % fileName = '9979_TV';
-% % fileName = '46579_TV';
-% sig = audioread(strcat("data/murmur/", fileName, ".wav"))';
-% tlabels = readtable(strcat("data/murmur/", fileName, ".tsv"),"FileType","text","Delimiter","tab");
+fileName = '46579_TV';
+sig = audioread(strcat("data/murmur/", fileName, ".wav"))';
+tlabels = readtable(strcat("data/murmur/", fileName, ".tsv"),"FileType","text","Delimiter","tab");
 
 %%
 fs = 4000; % Hz
@@ -54,13 +54,7 @@ envelope = envelope/max(envelope);
 HeartRate = getHeartRate(envelope,locs,fs)
 
 %% Systolic/Diastolic regions
-SD = ones(1,length(fsig));
 
-for loc = locs
-    if round(loc-(0.1331/2)*fs)>0 && round(loc+(0.1331/2)*fs) < length(fsig)
-        SD(round(loc-(0.1331/2)*fs):round(loc+(0.1331/2)*fs)) = 0;
-    end
-end
 
 %% Plot
 figure(1)
@@ -71,13 +65,12 @@ hold on;
 plot(t,envelope*5);
 plot(t,5*labelArray/4*max(envelope));
 plot(locs/fs,pks*5,'.');
-plot(t,SD);
 hold off;
 % xlim([0 10]);
 xlim([t(1) t(end)]);
 xlabel('Time [s]');
 ylabel('Amplitude [a.u.]');
-legend('Signal','Envelope [a.u.]','Hert cycle','S1 and S2', 'S/D regions');
+legend('Signal','Envelope [a.u.]');
 
 % Plot filtered FFT
 subplot(2,1,2)
