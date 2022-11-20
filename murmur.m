@@ -40,12 +40,9 @@ function pathology = murmur(sig,fs,SD)
     E = E/max(E); % Normalize
     
     % murmur detection
-    sounds = ones(size(SD));
-    sounds(SD == 1) = 0;
     l = min(length(E),length(SD)); % If E and SD would be different size
-    E_SD = E(:,1:l).*sounds(:,1:l);
-    sum(E(:,l))/t_length;
-    fprintf('%f\n',sum(E(:,l))/t_length);
+    E_SD = E(:,1:l).*SD(:,1:l);
+    fprintf('%f\n',sum(E_SD(:,l))*1000/t_length);
 %     if sum(E(:,l))/t_length < 1000
 %         pathology = 1;
 %     end

@@ -7,8 +7,8 @@ clear all;
 % sig = audioread(strcat("data/normal/", fileName, ".wav"))';
 % tlabels = readtable(strcat("data/normal/", fileName, ".tsv"),"FileType","text","Delimiter","tab");
 
-fileName = '9979_TV';
-% fileName = '46579_TV';
+% fileName = '9979_TV';
+fileName = '49748_TV';
 sig = audioread(strcat("data/murmur/", fileName, ".wav"))';
 tlabels = readtable(strcat("data/murmur/", fileName, ".tsv"),"FileType","text","Delimiter","tab");
 
@@ -38,7 +38,7 @@ fsig = filter(b_high,a_high,fsig);
 
 %% STFT
 % Short-time Fourier transform
-[s,f2_stft,t2] = stft(fsig,fs,'Window',hann(1024));
+[s,f2_stft,t2] = stft(fsig,fs,'Window',hann(512));
 sdb = mag2db(abs(s)); % Amplitude spectrum to dB
 
 %% Envelope using Hilbert transformation
@@ -52,7 +52,7 @@ envelope = envelope/max(envelope);
 [pks, locs] = findpeaks(envelope,'MinPeakDistance',0.17*fs,'MinPeakHeight',mean(envelope)*1); % 0.2s
 
 %% Get heart rate
-HeartRate = getHeartRate(envelope,locs,fs)
+HeartRate = getHeartRate(envelope,locs,fs);
 
 %% Binary systolic/Diastolic regions
 SD = ones(1,length(fsig));
@@ -64,7 +64,7 @@ for loc = locs
 end
 
 %% Murmur detection
-xxx = murmur(sig,fs,SD);
+pathology = murmur2(envelope,SD);
 
 %% Plot
 % figure(1)

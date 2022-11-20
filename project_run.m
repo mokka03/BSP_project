@@ -50,15 +50,16 @@ function properties = project_run(sig)
     
     %% Systolic/Diastolic regions
     SD = ones(1,length(fsig));
-
+%     a = 0.1331;
+    a = 0.2;
     for loc = locs
-        if round(loc-(0.1331/2)*fs)>0 && round(loc+(0.1331/2)*fs) < length(fsig)
-            SD(round(loc-(0.1331/2)*fs):round(loc+(0.1331/2)*fs)) = 0;
+        if round(loc-(a/2)*fs)>0 && round(loc+(a/2)*fs) < length(fsig)
+            SD(round(loc-(a/2)*fs):round(loc+(a/2)*fs)) = 0;
         end
     end
     
     %% Murmur detection
-    pathology = murmur(sig,fs,SD);
+    pathology = murmur2(sig,fs,SD,length(pks));
     fprintf('%i\n',pathology);
     
     %% Properties

@@ -64,7 +64,7 @@ for loc = locs
 end
 
 %% Murmur detection
-pathology = murmur(sig,fs,SD);
+pathology = murmur2(sig,fs,SD);
 
 %% Plot
 % figure(1)

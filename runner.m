@@ -6,12 +6,12 @@ labels = readtable("data/normal/85033_TV.tsv","FileType","text","Delimiter","tab
 
 props = project_run(sig);
 %% Folder
-% folder = 'data/normal/';
-% [props_n,labels_n] = run_for_folder(folder);
+folder = 'data/normal/';
+[props_n,labels_n] = run_for_folder(folder);
 folder = 'data/murmur/';
 [props_m,labels_m] = run_for_folder(folder);
 
-% props = [props_n,props_m];
+props = [props_n,props_m];
 % labels = [labels_n;labels_m];
 %%
 % [hit_percent,miss_percent,multihit_percent,hrdiff_percent,ibsegdiff_percent,Se,Sp] = ...

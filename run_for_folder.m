@@ -13,7 +13,8 @@ function [props,labels] = run_for_folder(folder)
         lab = table2cell(lab);
         labels{k,:} = lab;
         props(k) = project_run(sig);
-        fprintf('%s\n',fname);
+%         fprintf('%s\n',fname);
+%         saveas(gcf,strcat('figure/murmur',num2str(k),".png"))
     end
 
 end
