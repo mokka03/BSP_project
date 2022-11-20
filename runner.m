@@ -1,7 +1,8 @@
 %% EXAMPLE
+clear all; close all;
 %% Single file
 sig = audioread("data/normal/85033_TV.wav");
-labels = readtable("data/normal/85033_TV.tsv","FileType","delimitedtext","Delimiter","tab");
+labels = readtable("data/normal/85033_TV.tsv","FileType","text","Delimiter","tab");
 
 props = project_run(sig);
 %% Folder
