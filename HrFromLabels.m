@@ -17,6 +17,7 @@ figure(5)
 for file = wavfiles' % Iterate through the files of the folder
     fprintf(1, 'Doing something with %s.\n', file.name);
     
+    % Read input
     sig = audioread(strcat(dirName, file.name))';
     tlabels = readtable(strcat(dirName, file.name(1:end-4), ".tsv"),"FileType","text","Delimiter","tab");
     
@@ -36,16 +37,18 @@ for file = wavfiles' % Iterate through the files of the folder
     % Calculate heart rate
     HeartRate = 1/((locs(end)-locs(1))/fs/size(locs,2))*60;
     
+    % Writ heart rate data into the table
     for i = 1:length(wavfiles)
         if file.name(1:end-4) == HR{i,1}
             HR{i,3} = HeartRate;
         end
     end
     
+    % Plot
     plot(labelS1);
     hold on;
     plot(locs,pks,'.');
     hold off;
 end
 
-writetable(HR, "data/HR_murmur.xls")
+% writetable(HR, "data/HR_murmur.xls")
