@@ -60,7 +60,7 @@ function properties = project_run(sig)
     
     %% Murmur detection
     pathology = murmur2(sig,fs,SD,length(pks));
-    fprintf('%i\n',pathology);
+%     fprintf('%i\n',pathology);
     
     %% Properties
     properties.S_loc = locs;

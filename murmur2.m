@@ -26,7 +26,7 @@ function pathology = murmur2(sig,fs,SD,peaknum)
     
     %% murmur
     envelope_SD = envelope.*SD;
-    fprintf('%f\n',sum(envelope_SD)/length(envelope_SD)*1000);
+%     fprintf('%f\n',sum(envelope_SD)/length(envelope_SD)*1000);
     if sum(envelope_SD)/length(envelope_SD)*1000 > 20
 %     if sum(envelope_SD)/sum(envelope) > 1.5
         pathology = 1;
