@@ -17,8 +17,10 @@ function properties = project_run(sig)
 %     labelArray = getLabels(tlabels,fs,t_length);
     
     %% Filtering
-    f1 = 45; % Hz
-    f2 = 30; % Hz
+%     f1 = 45; % Hz
+%     f2 = 30; % Hz
+    f1 = 500; % Hz
+    f2 = 10; % Hz
     % Filtering out the frequencies above f1 Hz
     [b_low,a_low] = butter(5,f1/(fs/2),'low');
     fsig = filter(b_low,a_low,sig);
@@ -59,8 +61,9 @@ function properties = project_run(sig)
     end
     
     %% Murmur detection
-    pathology = murmur2(sig,fs,SD,length(pks));
+%     pathology = murmur2(sig,fs,SD,length(pks));
 %     fprintf('%i\n',pathology);
+    pathology = murmur3(sig,fs);
     
     %% Properties
     properties.S_loc = locs;
@@ -68,5 +71,22 @@ function properties = project_run(sig)
     properties.ib_seg = SD;
     properties.pathology = pathology;
     properties.len = length(sig);
+    
+%     %% Plot
+%     % Plot the Short-time Fourier spectrum of the filtered signal
+%     figure(2)
+%     p = pcolor(t2,f2_stft,sdb);
+%     set(p, 'EdgeColor', 'none');    % Turn off gtid
+%     cc = max(sdb(:))+[-60 0];
+%     ax = gca;
+%     ax.CLim = cc;
+%     view(2)
+%     c = colorbar;
+%     c.Label.String = 'Amplitude [dB]';
+%     len = size(t2,1);
+%     xlim([round(1*len/10)*t_length/len round(len-2*len/10)*t_length/len]);
+%     ylim([-400 400]);
+%     xlabel('Time [s]');
+%     ylabel('Frequency [Hz]');
     
 end

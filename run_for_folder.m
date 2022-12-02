@@ -17,9 +17,9 @@ function [props,labels,hr_truth] = run_for_folder(folder)
         labels{k,:} = lab;
         props(k) = project_run(sig);
         hr_truth(k) = HR.HR(HR.Signal == fname(1:end-4));
-        fprintf('%s\n',fname);
+%         fprintf('%s\n',fname);
 %         fprintf('%d\n',hr_truth);
-%         saveas(gcf,strcat('figure/murmur',num2str(k),".png"))
+%         saveas(gcf,strcat('figure2/stft/normal',num2str(k),".png"))
     end
 
 end
