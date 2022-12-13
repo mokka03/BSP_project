@@ -12,9 +12,9 @@ folder = 'data/normal/';
 fprintf('%s\n',['Processing ' folder ' ...']);
 [props_n,labels_n,hr_n] = run_for_folder(folder);
 
-% Murmur signals
+%This folder only has 61117_TV and 84802_PV in this example
 folder = 'data/murmur/';
-fprintf('%s\n',['Processing ' folder ' ...']);
+
 [props_m,labels_m,hr_m] = run_for_folder(folder);
 
 props = [props_n,props_m];

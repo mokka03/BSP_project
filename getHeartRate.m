@@ -19,7 +19,7 @@ function [HeartRate] = getHeartRate(envelope,locs,fs)
         tCycle = (locs_short(end-1)-locs_short(1))/(peak_num-1)*2;
     end
 
-    % Calculate heart rate
+    % Calculate heart rate in bpm
     HeartRate = (1/tCycle)*fs;
     HeartRate = HeartRate*60;
 

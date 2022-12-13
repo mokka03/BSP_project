@@ -19,7 +19,7 @@ function [props,labels,HRFromTable] = run_for_folder(folder)
         lab = readtable([folder fname(1:end-4) '.tsv'],"FileType","text","Delimiter","tab");
         lab = table2cell(lab);
         labels{k,:} = lab;
-        fprintf('%s\n',fname);
+%         fprintf('%s\n',fname);
         props(k) = project_run(sig);
         
         % Get HR from table

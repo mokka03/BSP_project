@@ -24,20 +24,6 @@ for k=1:length(labels)
     s1s = starts(ids==1 | ids==3)*4000;
     s1e = stops(ids==1 | ids==3)*4000;
     hit=0; miss=0; multi=0;
-%     for kk=1:length(s1s)
-%         a = s1s(kk)<=props_predict(k).S_loc;
-%         b = s1e(kk)>=props_predict(k).S_loc;
-%         s = sum(s1s(kk)<=props_predict(k).S_loc);
-%         e = sum(s1e(kk)>=props_predict(k).S_loc);
-%         if s>0 && e>0
-%             hit=hit+1;
-%             if s>1 || e>1
-%                 multi=multi+1;
-%             end
-%         else
-%             miss=miss+1;
-%         end
-%     end
     
     for kk=1:length(s1s)
         after_start = (s1s(kk)<=props_predict(k).S_loc);

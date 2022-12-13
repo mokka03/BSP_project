@@ -38,7 +38,7 @@ function properties = project_run(sig)
     
     %% Create binary mask for Systolic/Diastolic regions
     SD = ones(1,length(fsig)); 
-    a = 0.11; % Length of heart sounds in s
+    a = 0.11;
     for loc = locs
         if round(loc-(a/2)*fs)>0 && round(loc+(a/2)*fs) < length(fsig)
             SD(round(loc-(a/2)*fs):round(loc+(a/2)*fs)) = 0;
@@ -54,4 +54,6 @@ function properties = project_run(sig)
     properties.ib_seg = SD';
     properties.pathology = pathology;
     properties.len = length(sig);
+   
+    
 end
