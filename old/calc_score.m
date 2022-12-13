@@ -10,10 +10,9 @@ function [hit_percent,miss_percent,multihit_percent,hrdiff_percent,ibsegdiff_per
 %       hrdiff_percent                 - heartrate error (percent)
 %       ibsegdiff_percent              - inbetween segment overlap error (percent)
 %       Se/Sp                          - sensitivity/specificity
-fprintf('%s\n','Claculating score...');
+
 conf = [0,0;
         0,0];
-    
 for k=1:length(labels)
     ids = cell2mat(labels{k}(:,3));
     starts = cell2mat(labels{k}(:,1));
@@ -24,28 +23,12 @@ for k=1:length(labels)
     s1s = starts(ids==1 | ids==3)*4000;
     s1e = stops(ids==1 | ids==3)*4000;
     hit=0; miss=0; multi=0;
-%     for kk=1:length(s1s)
-%         a = s1s(kk)<=props_predict(k).S_loc;
-%         b = s1e(kk)>=props_predict(k).S_loc;
-%         s = sum(s1s(kk)<=props_predict(k).S_loc);
-%         e = sum(s1e(kk)>=props_predict(k).S_loc);
-%         if s>0 && e>0
-%             hit=hit+1;
-%             if s>1 || e>1
-%                 multi=multi+1;
-%             end
-%         else
-%             miss=miss+1;
-%         end
-%     end
-    
     for kk=1:length(s1s)
-        after_start = (s1s(kk)<=props_predict(k).S_loc);
-        before_end = (s1e(kk)>=props_predict(k).S_loc);
-        num = sum(after_start==before_end);
-        if num>0
+        s = sum(s1s(kk)<=props_predict(k).S_loc);
+        e = sum(s1e(kk)>=props_predict(k).S_loc);
+        if s>0 && e>0
             hit=hit+1;
-            if num>1
+            if s>1 || e>1
                 multi=multi+1;
             end
         else
@@ -55,31 +38,15 @@ for k=1:length(labels)
 
     hit_percent(k) = hit/length(s1s) *100;
     miss_percent(k) = miss/length(s1s) *100;
-    if hit ~= 0
-        multihit_percent(k) = multi/hit *100;
-    else
-        multihit_percent(k) = 0;
-    end
+    multihit_percent(k) = multi/hit *100;
 
     % HR test
     hrdiff = abs(props_predict(k).HR - props_true(k).HR);
-    hrdiff_percent(k) = hrdiff/props_true(k).HR *100;
+    hrdiff_percent(k) = props_true(k).HR/hrdiff *100;
 
     % ib_seg test
-    ib_starts = starts(ids==2 | ids==4)*4000;
-    ib_stops = stops(ids==2 | ids==4)*4000;
-    ib_seg = zeros(props_predict(k).len,1);
-    if ib_starts(1) == 0
-        ib_starts(1) = 1;
-    end
-    for kk = 1:length(ib_starts)
-        ib_seg(round(ib_starts(kk)):round(ib_stops(kk)))=1;
-    end
-    compare = props_predict(k).ib_seg;
-    compare(1:round(ib_starts(1))) = 0;
-    compare(round(ib_stops(end)):end) = 0;
-    ibsegdiff = sum(abs(compare - ib_seg));
-    ibsegdiff_percent(k) = ibsegdiff/sum(ib_seg) *100;
+    ibsegdiff = sum(abs(props_predict(k).ib_seg - props_true(k).ib_seg));
+    ibsegdiff_percent(k) = sum(props_true(k).ib_seg)/ibsegdiff *100;
 
     % pathology test
     x = abs(props_predict(k).pathology-1)+1;

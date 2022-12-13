@@ -82,7 +82,7 @@ xlim([t(1) t(end)]);
 xlabel('Time [s]');
 ylabel('Amplitude [a.u.]');
 legend('Signal','Envelope [a.u.]','Hert cycle','S1 and S2', 'S/D regions');
-% set(gca,"FontSize",16)
+set(gca,)
 
 % Plot filtered FFT
 subplot(2,1,2)
@@ -90,7 +90,6 @@ plot(f_filtered,movmean(fsig_FFT,10));
 xlim([0 600]);
 xlabel('Frequency [Hz]');
 ylabel('|A(f)|_{norm}');
-% set(gca,"FontSize",16)
 
 
 % Plot the Short-time Fourier spectrum of the filtered signal
@@ -107,4 +106,3 @@ c.Label.String = 'Amplitude [dB]';
 ylim([-600 600]);
 xlabel('Time [s]');
 ylabel('Frequency [Hz]');
-% set(gca,"FontSize",16)

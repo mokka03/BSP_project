@@ -66,9 +66,9 @@ function properties = project_run(sig)
     pathology = murmur3(sig,fs);
     
     %% Properties
-    properties.S_loc = locs;
+    properties.S_loc = locs';
     properties.HR = HeartRate;
-    properties.ib_seg = SD;
+    properties.ib_seg = SD';
     properties.pathology = pathology;
     properties.len = length(sig);
     

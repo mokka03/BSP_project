@@ -1,4 +1,4 @@
-function [props,labels,HRFromTable] = run_for_folder(folder)
+function [props,labels] = run_for_folder(folder)
 %RUN_FOR_FOLDER Runs your project_run function for all files in a folder
 %   Requires that the wav and tsv files have the same name
 
@@ -9,7 +9,7 @@ function [props,labels,HRFromTable] = run_for_folder(folder)
     folder_name = folder(i(1)+1:end-1); % 'normal' or 'murmur'
     hr_table = readtable(['data/HR_' folder_name '.csv']);
     
-    HRFromTable = zeros(length(files.name),1);
+    HRFromTable = zeros(1,length(files.name));
 
     for k=1:length(files.name)
         % Run for signal
@@ -23,11 +23,9 @@ function [props,labels,HRFromTable] = run_for_folder(folder)
         props(k) = project_run(sig);
         
         % Get HR from table
-        fnameStr = convertCharsToStrings(fname);
-        fnameStr = erase(fnameStr,".wav");
-        temp = hr_table.Signal==fnameStr;
+        fnameStr = 
+        temp = hr_table.Signal==convertCharsToStrings(fname)(1:end-4);
         hr = table2array(hr_table(temp,2));
-        HRFromTable(k) = hr;
     end
 
 end
