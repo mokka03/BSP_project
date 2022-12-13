@@ -52,8 +52,8 @@ function properties = project_run(sig)
     
     %% Systolic/Diastolic regions
     SD = ones(1,length(fsig));
-%     a = 0.1331;
-    a = 0.2;
+    a = 0.11;
+%     a = 0.2;
     for loc = locs
         if round(loc-(a/2)*fs)>0 && round(loc+(a/2)*fs) < length(fsig)
             SD(round(loc-(a/2)*fs):round(loc+(a/2)*fs)) = 0;

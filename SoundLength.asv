@@ -1,8 +1,8 @@
 clear all;
 
 % Choose directory: normal or murmur
-dirName = 'data\normal\';
-% dirName = 'data\murmur\';
+% dirName = 'data\normal\';
+dirName = 'data\murmur\';
 
 % https://matlab.fandom.com/wiki/FAQ#How_can_I_process_a_sequence_of_files.3F
 wavfiles = dir([dirName '*.wav']); % Get the files from the directory
@@ -88,4 +88,4 @@ legend('S1 length','S2 length')
 xlabel('Heart rate [bpm]');
 ylabel('Time [s]');
 xlim([HrVsSound(1,1) HrVsSound(end,1)]);
-set(gca,'FontSize',15);
+set(gca,"FontSize1
