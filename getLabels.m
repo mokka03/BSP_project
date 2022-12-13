@@ -1,6 +1,6 @@
 function [y] = getLabels(tlabels,fs,t_length)
 %GETLABELS 
-% % Get the labels as array
+% % Get the labels to the signal as an array
 
 labels = table2array(tlabels);
 length = t_length*fs; % number of data points

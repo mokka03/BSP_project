@@ -1,5 +1,5 @@
 function [f,P1] = myFFT(A,fs)
-%MYFOURIER
+%MYFFT
 %   Normalized onesided FFT
 %   A variable will be transformed
 %   fs is the sampling frequency
@@ -14,4 +14,3 @@ P1 = P1/max(P1); % Normalize
 
 f = fs *(0:( L /2) )/L ; % Define the frequency
 end
-

@@ -19,6 +19,7 @@ t = linspace(0, t_length, t_length*fs); % s
 
 %% Get labels
 labelArray = getLabels(tlabels,fs,t_length);
+
 %% Filtering
 % f1 = 45; % Hz
 % f2 = 30; % Hz
@@ -45,8 +46,8 @@ sdb = mag2db(abs(s)); % Amplitude spectrum to dB
 fsig_hat = hilbert(fsig);
 analitic = sqrt(fsig.^2 + fsig_hat.^2);
 envelope = abs(analitic);
-envelope = movmean(envelope,200); %30
-envelope = envelope/max(envelope);
+envelope = movmean(envelope,200); % Moving average
+envelope = envelope/max(envelope); % Normalize
 
 %% Find peaks on envelope
 [pks, locs] = findpeaks(envelope,'MinPeakDistance',0.17*fs,'MinPeakHeight',mean(envelope)*1); % 0.2s
@@ -82,7 +83,7 @@ xlim([t(1) t(end)]);
 xlabel('Time [s]');
 ylabel('Amplitude [a.u.]');
 legend('Signal','Envelope [a.u.]','Hert cycle','S1 and S2', 'S/D regions');
-% set(gca,"FontSize",16)
+set(gca,"FontSize",16)
 
 % Plot filtered FFT
 subplot(2,1,2)
@@ -90,7 +91,8 @@ plot(f_filtered,movmean(fsig_FFT,10));
 xlim([0 600]);
 xlabel('Frequency [Hz]');
 ylabel('|A(f)|_{norm}');
-% set(gca,"FontSize",16)
+set(gca,"FontSize",16)
+% saveas(gcf,'figure2/envelope.png')
 
 
 % Plot the Short-time Fourier spectrum of the filtered signal
@@ -107,4 +109,5 @@ c.Label.String = 'Amplitude [dB]';
 ylim([-600 600]);
 xlabel('Time [s]');
 ylabel('Frequency [Hz]');
-% set(gca,"FontSize",16)
+set(gca,"FontSize",16)
+% saveas(gcf,'figure2/stft.png')
