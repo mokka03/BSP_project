@@ -5,4 +5,4 @@ Run the processing for all of the signal from runner.m file. Our solution for th
 Dominik Zsolt Homoki, Levente Maucha, Bálint Tamás
 
 ### Requirements
-The codes were written in MATLAB R2019b, using Signal Processing Toolbox
+The codes were written in MATLAB R2019b, using Signal Processing Toolbox.
