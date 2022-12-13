@@ -10,9 +10,15 @@
 folder = 'data/normal/';
 [props_n,labels_n,hr_n] = run_for_folder(folder);
 
+fprintf('%s\n','-----------------------------------------------');
+
 %This folder only has 61117_TV and 84802_PV in this example
 folder = 'data/murmur/';
 [props_m,labels_m,hr_m] = run_for_folder(folder);
+
+% a = props_n.pathology(:);
+% mean(props_n.pathology)
+% mean(props_m.pathology)
 
 props = [props_n,props_m];
 labels = [labels_n;labels_m];

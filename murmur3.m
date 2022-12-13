@@ -1,4 +1,4 @@
-function pathology = murmur2(sig,fs)
+function pathology = murmur3(sig,fs)
     %MURMUR2 Summary of this function goes here
     %   Detailed explanation goes here
     pathology = 0;
@@ -15,14 +15,21 @@ function pathology = murmur2(sig,fs)
     
     %% STFT
     % Short-time Fourier transform
-    [s,f2_stft,t2] = stft(fsig,fs,'Window',hann(5012));
+    [s,f2_stft,t2] = stft(fsig,fs,'Window',hann(800));
     sdb = mag2db(abs(s)); % Amplitude spectrum to dB
     
     %% Pathology
-    lowfreq = mean(mean(abs(sdb(2520:2657,:))));
-    highfreq = mean(mean(abs(sdb(2658:3008,:))));
+%     lowfreq = mean(mean(abs(sdb(2520:2657,:))));
+%     highfreq = mean(mean(abs(sdb(2658:3008,:)))); % for 5012 window
+    lowfreq = mean(mean(abs(sdb(round(size(sdb,1)/2):round(size(sdb,1)/10*5.3),:))));
+    highfreq = mean(mean(abs(sdb(round(size(sdb,1)/10*5.3):round(size(sdb,1)/10*6),:))));
     ratio = highfreq/lowfreq;
-    fprintf('%f\n',ratio);
+    pathology = ratio;
+%     if ratio<1.3692
+%         pathology = 1;
+%     end
+
+%     fprintf('%f\n',pathology);
     
 end
 
