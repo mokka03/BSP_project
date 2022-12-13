@@ -2,15 +2,15 @@
 clear all;
 
 %% Load data
-fileName = '69141_MV';
-% fileName = '85033_TV';
-sig = audioread(strcat("data/normal/", fileName, ".wav"))';
-tlabels = readtable(strcat("data/normal/", fileName, ".tsv"),"FileType","text","Delimiter","tab");
+% fileName = '69141_MV';
+% % fileName = '85033_TV';
+% sig = audioread(strcat("data/normal/", fileName, ".wav"))';
+% tlabels = readtable(strcat("data/normal/", fileName, ".tsv"),"FileType","text","Delimiter","tab");
 
-% fileName = '9979_TV';
-% % fileName = '49748_TV';
-% sig = audioread(strcat("data/murmur/", fileName, ".wav"))';
-% tlabels = readtable(strcat("data/murmur/", fileName, ".tsv"),"FileType","text","Delimiter","tab");
+fileName = '9979_TV';
+% fileName = '49748_TV';
+sig = audioread(strcat("data/murmur/", fileName, ".wav"))';
+tlabels = readtable(strcat("data/murmur/", fileName, ".tsv"),"FileType","text","Delimiter","tab");
 
 %% fs and t
 fs = 4000; % Hz
