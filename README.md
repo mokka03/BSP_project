@@ -1,4 +1,4 @@
-# BSP Final Project - Classifying muurmurs
+# BSP Final Project - Classifying murmurs
 Run the processing for all of the signal from runner.m file. Our solution for the project can be found in the project_run.m file.
 
 ### Heart sound detection
