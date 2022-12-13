@@ -8,7 +8,7 @@ sig = audioread(strcat("data/normal/", fileName, ".wav"))';
 tlabels = readtable(strcat("data/normal/", fileName, ".tsv"),"FileType","text","Delimiter","tab");
 
 % fileName = '9979_TV';
-% fileName = '49748_TV';
+% % fileName = '49748_TV';
 % sig = audioread(strcat("data/murmur/", fileName, ".wav"))';
 % tlabels = readtable(strcat("data/murmur/", fileName, ".tsv"),"FileType","text","Delimiter","tab");
 
@@ -39,7 +39,7 @@ fsig = filter(b_high,a_high,fsig);
 
 %% STFT
 % Short-time Fourier transform
-[s,f2_stft,t2] = stft(fsig,fs,'Window',hann(5012));
+[s,f2_stft,t2] = stft(fsig,fs,'Window',hann(800));
 sdb = mag2db(abs(s)); % Amplitude spectrum to dB
 
 %% Envelope using Hilbert transformation
@@ -82,7 +82,7 @@ hold off;
 xlim([t(1) t(end)]);
 xlabel('Time [s]');
 ylabel('Amplitude [a.u.]');
-legend('Signal','Envelope [a.u.]','Hert cycle','S1 and S2', 'S/D regions');
+legend('Signal','Envelope [a.u.]','Labels','S1 and S2', 'S/D regions');
 set(gca,"FontSize",16)
 
 % Plot filtered FFT

@@ -10,8 +10,8 @@ function properties = project_run(sig)
     %% fs and t
     sig = sig';
     fs = 4000; % Hz
-    t_length = length(sig)/fs; % s
-    t = linspace(0, t_length, t_length*fs); % s
+%     t_length = length(sig)/fs; % s
+%     t = linspace(0, t_length, t_length*fs); % s
     
     %% Filtering
     f1 = 500; % Hz

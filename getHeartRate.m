@@ -4,10 +4,18 @@ function [HeartRate] = getHeartRate(envelope,locs,fs)
     %   calculate the heart rate.
     %   We assume that we have all of S1 and S2 sounds, none of them is
     %   missing.
+    
+    % Inputs:
+    % envelope: Envelope of the signal
+    % locs: Localization of the S1 and S2 peaks in the signal
+    % fs: Sampling frequency
+    
+    % Outputs:
+    % HeartRate: Heart rate in bpm
 
     % Cut down the beginning and end, just to get rid of noisy part
-    start_ = round(size(envelope,2)/5);
-    end_ = start_*4;
+    start_ = round(size(envelope,2)/8);
+    end_ = start_*7;
     locs_short = locs(locs>start_); % Peak locations after start_
     locs_short = locs_short(locs_short<end_); % Peak locations between start_ and end_
 
@@ -22,6 +30,5 @@ function [HeartRate] = getHeartRate(envelope,locs,fs)
     % Calculate heart rate in bpm
     HeartRate = (1/tCycle)*fs;
     HeartRate = HeartRate*60;
-
 end
 

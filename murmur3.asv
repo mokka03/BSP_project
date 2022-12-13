@@ -1,6 +1,17 @@
 function pathology = murmur3(sig,fs)
     %MURMUR3
-    %   Detailed explanation goes here
+    %   Classification based on the ratio of power of low and high
+    %   frequencies  on the STFT.
+    
+    % Inputs:
+    % sig: Signal
+    % fs: Sampling frequency
+    
+    % Outputs:
+    % 
+    
+    
+    
     pathology = 0;
     %% Filtering
     f1 = 400; % Hz
@@ -11,7 +22,6 @@ function pathology = murmur3(sig,fs)
     % Filtering out the frequencies under f2 Hz
     [b_high,a_high] = butter(6,f2/(fs/2),'high');
     fsig = filter(b_high,a_high,fsig);
-    % freqz(b1,a1);
     
     %% STFT
     % Short-time Fourier transform
@@ -19,7 +29,7 @@ function pathology = murmur3(sig,fs)
     sdb = mag2db(abs(s)); % Amplitude spectrum to dB
     
     %% Pathology
-    % Check the ratio of power on STFT from 0 to 100 Hz and from 200 to 400
+    % Check the ratio of power on STFT from 0 to 200 Hz and from 200 to 400
     % Hz
     lowfreq = mean(mean(abs(sdb(round(size(sdb,1)/2):round(size(sdb,1)/10*5.3),:))));
     highfreq = mean(mean(abs(sdb(round(size(sdb,1)/10*5.3):round(size(sdb,1)/10*6),:))));
@@ -27,9 +37,6 @@ function pathology = murmur3(sig,fs)
     if ratio<1.325
         pathology = 1;
     end
-
-%     fprintf('%f\n',pathology);
-    
 end
 
 
